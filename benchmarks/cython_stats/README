@@ -1,0 +1,7 @@
+The main Cython code is extracted from astropy/astropy/stats/_stats.pyx for comparison purposes
+
+It is intended to be built as:
+```
+python setup.py build_ext --inplace
+```
+
