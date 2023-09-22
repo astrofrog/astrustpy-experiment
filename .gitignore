@@ -4,3 +4,6 @@ Cargo.lock
 *.so
 target
 venv
+
+benchmarks/cython_stats/*.c
+benchmarks/cython_stats/build
