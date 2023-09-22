@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "wheel", "setuptools-rust"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astrustpy"
+version = "0.1.0"
+license = { text = "BSD 3-Clause" }
+readme = "README.md"
+requires-python = ">=3.8"
+
+[project.urls]
+Repository = "https://github.com/astropy/astrustpy-experiment"
+
+[tool.setuptools.packages]
+find = { where = ["python"] }
+
+[[tool.setuptools-rust.ext-modules]]
+target = "astrustpy.stats"
