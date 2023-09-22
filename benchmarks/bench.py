@@ -2,15 +2,17 @@ import time
 import numpy as np
 from astropy.stats._stats import ks_2samp
 
-from astropy.stats._stats import ks_2samp as ks_2samp_rust
-# from astrustpy import ks_2samp as ks_2samp_rust
+#from astropy.stats._stats import ks_2samp as ks_2samp_rust
+from astrustpy import ks_2samp as ks_2samp_rust
 
-R = 100
+R = 15
+dtypes = ['i4', 'f4', 'f8']
+dtypes = ['f8']
 
 print("          cython        rust")
 for N in [100_000, 1_000_000, 10_000_000]:
     print(f'N={N}')
-    for dtype in ['i4', 'f4', 'f8']:
+    for dtype in dtypes:
         x = (np.random.random(N) * (2**32 - 1)).astype(dtype)
         y = (np.random.random(N) * (2**31 - 1)).astype(dtype)
         start1 = time.time()

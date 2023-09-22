@@ -8,8 +8,9 @@ edition = "2018"
 kuchiki = "0.8.0"
 pyo3 = { version = "0.19.2", features = ["extension-module"] }
 tendril = "0.4.3"
+numpy = "0.19"
 
 [lib]
-name = "stats"
+name = "rust_stats"
 crate-type = ["cdylib"]
 path = "rust/lib.rs"

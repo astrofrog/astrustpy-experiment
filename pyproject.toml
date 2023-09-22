@@ -16,4 +16,4 @@ Repository = "https://github.com/astropy/astrustpy-experiment"
 find = { where = ["."] }
 
 [[tool.setuptools-rust.ext-modules]]
-target = "astrustpy.stats"
+target = "astrustpy.rust_stats"
