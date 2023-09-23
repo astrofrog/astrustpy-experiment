@@ -16,6 +16,25 @@ ctypedef fused dtype:
     np.float64_t
     np.longdouble_t
 
+cpdef double ks_2samp_unopt(dtype[:] data1, dtype[:] data2):
+    cdef:
+        size_t i = 0, j = 0, n1 = data1.shape[0], n2 = data2.shape[0]
+        dtype d1i, d2j
+        double d = 0, mind = 0, maxd = 0, inv_n1 = 1. / n1, inv_n2 = 1. / n2
+    while i < n1 and j < n2:
+        d1i = data1[i]
+        d2j = data2[j]
+        if d1i <= d2j:
+            while i < n1 and data1[i] == d1i:
+                d += inv_n1
+                i += 1
+        if d1i >= d2j:
+            while j < n2 and data2[j] == d2j:
+                d -= inv_n2
+                j += 1
+        mind = min(mind, d)
+        maxd = max(maxd, d)
+    return maxd - mind
 
 @cython.boundscheck(False)
 @cython.nonecheck(False)
@@ -42,22 +61,3 @@ cpdef double ks_2samp_opt(dtype[:] data1, dtype[:] data2):
     return maxd - mind
 
 
-cpdef double ks_2samp_unopt(dtype[:] data1, dtype[:] data2):
-    cdef:
-        size_t i = 0, j = 0, n1 = data1.shape[0], n2 = data2.shape[0]
-        dtype d1i, d2j
-        double d = 0, mind = 0, maxd = 0, inv_n1 = 1. / n1, inv_n2 = 1. / n2
-    while i < n1 and j < n2:
-        d1i = data1[i]
-        d2j = data2[j]
-        if d1i <= d2j:
-            while i < n1 and data1[i] == d1i:
-                d += inv_n1
-                i += 1
-        if d1i >= d2j:
-            while j < n2 and data2[j] == d2j:
-                d -= inv_n2
-                j += 1
-        mind = min(mind, d)
-        maxd = max(maxd, d)
-    return maxd - mind

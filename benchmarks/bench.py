@@ -1,15 +1,16 @@
 import time
 import numpy as np
-from astropy.stats._stats import ks_2samp
+#from astropy.stats._stats import ks_2samp
+from cython_stats.badstats import ks_2samp_opt as ks_2samp_opt_cy
+from cython_stats.badstats import ks_2samp_unopt as ks_2samp_unopt_cy
 
-#from astropy.stats._stats import ks_2samp as ks_2samp_rust
 from astrustpy import ks_2samp as ks_2samp_rust
 
 R = 15
 dtypes = ['i4', 'f4', 'f8']
 dtypes = ['f8']
 
-print("          cython        rust")
+print("          cython        rust        cython_unopt")
 for N in [100_000, 1_000_000, 10_000_000]:
     print(f'N={N}')
     for dtype in dtypes:
@@ -17,10 +18,15 @@ for N in [100_000, 1_000_000, 10_000_000]:
         y = (np.random.random(N) * (2**31 - 1)).astype(dtype)
         start1 = time.time()
         for repeat in range(R):
-            ks_2samp(x, y)
+            ks_2samp_opt_cy(x, y)
         end1 = time.time()
         start2 = time.time()
         for repeat in range(R):
             ks_2samp_rust(x, y)
         end2 = time.time()
-        print(f' {dtype} {1000 * (end1 - start1) / R:10.2f}ms {1000 * (end2 - start2) / R:10.2f}ms')
+        start3 = time.time()
+        for repeat in range(R):
+            ks_2samp_unopt_cy(x, y)
+        end3 = time.time()
+
+        print(f' {dtype} {1000 * (end1 - start1) / R:10.2f}ms {1000 * (end2 - start2) / R:10.2f}ms {1000 * (end3 - start3) / R:10.2f}ms')
