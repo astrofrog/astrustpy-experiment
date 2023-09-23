@@ -3,7 +3,9 @@ __pycache__
 Cargo.lock
 *.so
 target
+build
 venv
 
 benchmarks/cython_stats/*.c
 benchmarks/cython_stats/build
+
