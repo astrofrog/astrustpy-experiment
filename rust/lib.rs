@@ -1,8 +1,6 @@
-use numpy::ndarray::{ArrayD, ArrayViewD, ArrayViewMutD, Axis};
+use numpy::ndarray::{ArrayD, ArrayViewD, ArrayViewMutD, Axis, Array};
 use numpy::{IntoPyArray, PyArrayDyn, PyReadonlyArrayDyn};
-use pyo3::PyObject;
 use pyo3::{pymodule, types::PyModule, PyResult, Python};
-
 
 #[pymodule]
 fn rust_stats<'py>(_py: Python<'py>, m: &'py PyModule) -> PyResult<()> {
@@ -25,7 +23,11 @@ fn rust_stats<'py>(_py: Python<'py>, m: &'py PyModule) -> PyResult<()> {
         let n2 = data2.len_of(Axis(0));
         let inv_n1 = 1f64 / (n1 as f64);
         let inv_n2 = 1f64 / (n2 as f64);
-    
+
+        let dvec1:Vec<f64> = data1.iter().cloned().collect();
+        let dvec2:Vec<f64> = data2.iter().cloned().collect();
+        
+        
         let mut d = 0f64;
         let mut mind = 0f64;
         let mut maxd = 0f64;
@@ -38,14 +40,14 @@ fn rust_stats<'py>(_py: Python<'py>, m: &'py PyModule) -> PyResult<()> {
             let d2j = data2[j];
 
             if d1i <= d2j {
-                while (i < n1) && (data1[i] == d1i) {
+                while (i < n1) && (dvec1[i] == d1i) {
                     d += inv_n1;
                     i += 1;
                 }
             }
 
             if d1i >= d2j {
-                while (j < n2) && (data2[j] == d2j) {
+                while (j < n2) && (dvec2[j] == d2j) {
                     d -= inv_n2;
                     j += 1;
                 }
