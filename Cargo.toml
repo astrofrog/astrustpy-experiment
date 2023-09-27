@@ -14,3 +14,8 @@ numpy = "0.19"
 name = "rust_stats"
 crate-type = ["cdylib"]
 path = "rust/lib.rs"
+
+# the codegen-units=1 is critical for the fastest outcome
+# I think that's because it does inlining of the memory-access?
+[profile.release]
+codegen-units = 1
