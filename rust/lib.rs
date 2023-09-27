@@ -1,10 +1,10 @@
-use numpy::ndarray::{ArrayD, ArrayViewD, ArrayViewMutD, Axis, Array};
-use numpy::{IntoPyArray, PyArrayDyn, PyReadonlyArrayDyn};
+use numpy::ndarray::{ArrayViewD, Axis};
+use numpy::PyReadonlyArrayDyn;
 use pyo3::buffer::PyBuffer;
 use pyo3::{pymodule, types::PyModule, PyResult, Python};
 
 #[pymodule]
-fn rust_stats<'py>(py: Python<'py>, m: &'py PyModule) -> PyResult<()> {
+fn rust_stats<'py>(_py: Python<'py>, m: &'py PyModule) -> PyResult<()> {
 
     fn ks_2samp(data1: ArrayViewD<'_, f64>, 
                 data2: ArrayViewD<'_, f64>) -> f64 {
