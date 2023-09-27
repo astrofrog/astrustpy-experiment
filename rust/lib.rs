@@ -57,10 +57,8 @@ fn rust_stats<'py>(py: Python<'py>, m: &'py PyModule) -> PyResult<()> {
         let mut maxd = 0f64;
         
         Python::with_gil(|py| {
-            let n1 = data1buffer.item_count();
-            let n2 = data2buffer.item_count();
-            let inv_n1 = 1f64 / (n1 as f64);
-            let inv_n2 = 1f64 / (n2 as f64);
+            let inv_n1 = 1f64 / (data1buffer.item_count() as f64);
+            let inv_n2 = 1f64 / (data2buffer.item_count() as f64);
 
             let mut d = 0f64;
 
@@ -70,19 +68,19 @@ fn rust_stats<'py>(py: Python<'py>, m: &'py PyModule) -> PyResult<()> {
             let data1 = data1buffer.as_slice(py).unwrap();
             let data2 = data2buffer.as_slice(py).unwrap();
 
-            while (i < n1) && (j < n2) {
+            while (i < data1.len()) && (j < data2.len()) {
                 let d1i = data1[i].get();
                 let d2j = data2[j].get();
 
                 if d1i <= d2j {
-                    while (i < n1) && (data1[i].get() == d1i) {
+                    while (i < data1.len()) && (data1[i].get() == d1i) {
                         d += inv_n1;
                         i += 1;
                     }
                 }
 
                 if d1i >= d2j {
-                    while (j < n2) && (data2[j].get() == d2j) {
+                    while (j < data2.len()) && (data2[j].get() == d2j) {
                         d -= inv_n2;
                         j += 1;
                     }
